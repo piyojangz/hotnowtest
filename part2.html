@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div>
+
+        Palindromes : <input type="text" id="inputPalindromes">
+        <br/>
+        <button type="button" id="btncheck">check</button>
+        <p id="result"></p>
+
+        <hr/> longest palindrome of : "abceecjk" is
+        <h3 id="result2"></h3>
+        <hr/> Prime number : <input type="text" id="inputPrimenumber">
+        <br/>
+        <button type="button" id="btncheckPrimenumber">check</button>
+        <p id="result3"></p>
+
+        <hr/> reverses characters of each word in a sentence of : "IPHONE AND ANDROID" is
+        <h3 id="result4"></h3>
+        <hr/> swap two numbers without using a temporary variable :
+        <br/>
+        <input type="text" id="input1" placeholder="var 1">
+        <br/> <br/>
+        <input type="text" id="input2" placeholder="var 2">
+        <br/> <br/>
+        <button type="button" id="btnswapr">check</button>
+        <p id="result5"></p>
+
+    </div>
+</body>
+
+<script src="jquery.min.js"></script>
+<script>
+    function isPalindromes(str) {
+        var len = str.length;
+        for (var i = 0; i < len / 2; i++) {
+            if (str[i] !== str[len - 1 - i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    longeststr = '';
+    var getLongestPalindrome = function (str) {
+        var result = '';
+        for (var i = 0; i < str.length; i++) {
+            var popchar = str[i];
+            result += popchar;
+            if (str[0] == popchar) {
+                if (isPalindromes(result)) {
+                    if (result.length > longeststr.length) {
+                        longeststr = result;
+                    }
+                }
+            }
+        }
+
+        if (str.length > 0) {
+            return getLongestPalindrome(str.substr(1));
+        }
+        else {
+            return longeststr;
+        }
+    }
+
+
+    function isPrimenumber(str) {
+        var num = parseInt(str);
+        if (num < 2) {
+            return false;
+        }
+        var q = Math.floor(Math.sqrt(num));
+        //console.log(Math.sqrt(num));
+        for (var i = 2; i <= q; i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function reverses(str) {
+        var reversesentence = "";
+        var result = str.split(" ");
+        for (word of result) {
+            reversesentence += word.split('').reverse().join('') + ' ';
+        }
+        return reversesentence.trim();
+    }
+
+    function swap(var1, var2) {
+
+        var1 = var1 - var2;
+        var2 = var1 + var2;
+        var1 = var2 - var1;
+
+        $("#result5").html("Swaped number is " + var1 + " <-- --> " + var2)
+    }
+    $(document).ready(function () {
+        $("#btncheck").click(function () {
+            var str = $("#inputPalindromes").val();
+            var result = isPalindromes(str);
+            if (result) {
+                $("#result").html("this is Palindromes!");
+            }
+            else {
+                $("#result").html("this is not Palindromes!");
+            }
+
+        });
+
+        $("#btnswapr").click(function () {
+            var var1 = $("#input1").val();
+            var var2 = $("#input2").val();
+            swap(parseInt(var1), parseInt(var2));
+        });
+
+        var ans2 = getLongestPalindrome("abceecjk");
+        $("#result2").html(ans2);
+
+        var ans4 = reverses("IPHONE AND ANDROID");
+        $("#result4").html(ans4);
+
+        $("#btncheckPrimenumber").click(function () {
+            var str = $("#inputPrimenumber").val();
+
+            if (isPrimenumber(str)) {
+                $("#result3").html("this is Prime number!");
+            }
+            else {
+                $("#result3").html("this is not Prime number!");
+            }
+
+
+        });
+
+
+    });
+
+</script>

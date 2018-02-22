@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div>
+        <form> 
+            <h1 id="min">MIN : </h1>
+            <h1 id="max">MAX : </h1>
+        </form>
+    </div>
+</body>
+
+<script src="jquery.min.js"></script>
+<script>
+    var sumarr = [];
+    var weighted_directed_acyclic_graph = function (n) {
+        var vertext1, vertext2, vertext3, _vertext3;
+
+        for (val of n) {
+            if (val.length == 3) {
+                var storeval = 0;
+                var rs = 0;
+
+                for (val2 of n) {
+                    if (val[1] == val2[0]) {
+                        rs = val[2] + val2[2];
+                        sumarr.push(rs);
+                        storeval = val2[2];
+                    }
+                }
+                if (n.length > 0) {
+                    return weighted_directed_acyclic_graph(n.slice(1));
+                }
+            }
+            else {
+                alert("data in text file is wrong format");
+                return "ERROR";
+            }
+        }
+
+        return sumarr;
+    }
+
+
+    $(document).ready(function () {
+        $.get('mock.txt', function (data) {
+            vartextarr = [];
+            var splitline = data.split("\n");
+            for (val of splitline) {
+                var eachline = val.split(" ");
+                var conv2int = eachline.map(function (x) {
+                    return parseInt(x, 10);
+                });
+                vartextarr.push(conv2int);
+            }
+
+            var result = weighted_directed_acyclic_graph(vartextarr); 
+            var min = Math.min(...result);
+            var max = Math.max(...result);
+            $("#min").html("MIN : " + min);
+            $("#max").html("MAX : " + max);
+        }, 'text');
+    });
+
+</script>
